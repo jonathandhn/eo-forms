@@ -1,0 +1,183 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: EO Forms 1.0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-03 20:30+0200\n"
+"PO-Revision-Date: 2026-06-03 20:30+0200\n"
+"Last-Translator: Jonathan DAHAN\n"
+"Language-Team: French\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Handcrafted\n"
+
+#: ActionSubscriber.php:19
+msgid "EmailOctopus Subscribe"
+msgstr "Inscription EmailOctopus"
+
+#: ActionSubscriber.php:25 ConfirmationHandler.php:64
+msgid "EmailOctopus API key is not configured."
+msgstr "La clé API EmailOctopus n'est pas configurée."
+
+#: ActionSubscriber.php:32
+msgid "EmailOctopus list is not configured."
+msgstr "La liste EmailOctopus n'est pas configurée."
+
+#: ActionSubscriber.php:40
+msgid "A valid email field is required. Use the field ID \"email\" or provide one valid email value in the form."
+msgstr "Un champ d'e-mail valide est requis. Utilisez l'identifiant de champ « email » ou fournissez une valeur d'e-mail valide dans le formulaire."
+
+#: ActionSubscriber.php:59
+#, php-format
+msgid "Unknown EmailOctopus field mapping: %s"
+msgstr "Mappage de champ EmailOctopus inconnu : %s"
+
+#: ActionSubscriber.php:90
+msgid "The confirmation email could not be sent. Please try again later."
+msgstr "L'e-mail de confirmation n'a pas pu être envoyé. Veuillez réessayer plus tard."
+
+#: ActionSubscriber.php:101
+msgid "EmailOctopus"
+msgstr "EmailOctopus"
+
+#: ActionSubscriber.php:112
+msgid "EmailOctopus list"
+msgstr "Liste EmailOctopus"
+
+#: ActionSubscriber.php:116
+msgid "Select the EmailOctopus list to subscribe the user to."
+msgstr "Sélectionnez la liste EmailOctopus à laquelle abonner l'utilisateur."
+
+#: ActionSubscriber.php:123
+msgid "EmailOctopus List ID"
+msgstr "Identifiant de liste EmailOctopus"
+
+#: ActionSubscriber.php:126
+msgid "Insert the list ID manually. Automatic list loading requires a valid EMAILOCTOPUS_API_KEY and API access from WordPress."
+msgstr "Insérez l'identifiant de liste manuellement. Le chargement automatique des listes nécessite une clé EMAILOCTOPUS_API_KEY valide et un accès API depuis WordPress."
+
+#: ActionSubscriber.php:134
+msgid "Subscription status"
+msgstr "Statut d'abonnement"
+
+#: ActionSubscriber.php:138
+msgid "Pending"
+msgstr "En attente"
+
+#: ActionSubscriber.php:139
+msgid "Subscribed"
+msgstr "Abonné"
+
+#: ActionSubscriber.php:141
+msgid "Use Pending to send a WordPress confirmation email. The confirmation link will then mark the contact as Subscribed."
+msgstr "Utilisez « En attente » pour envoyer un e-mail de confirmation WordPress. Le lien de confirmation marquera ensuite le contact comme « Abonné »."
+
+#: ActionSubscriber.php:148
+msgid "Confirmation email subject"
+msgstr "Objet de l'e-mail de confirmation"
+
+#: ActionSubscriber.php:150 ConfirmationHandler.php:41
+msgid "Confirm your subscription"
+msgstr "Confirmez votre abonnement"
+
+#: ActionSubscriber.php:154
+msgid "Plain text email sent by WordPress."
+msgstr "E-mail au format texte brut envoyé par WordPress."
+
+#: ActionSubscriber.php:161
+msgid "Confirmation email message"
+msgstr "Message de l'e-mail de confirmation"
+
+#: ActionSubscriber.php:163 ConfirmationHandler.php:45
+msgid ""
+"Hello,\n"
+"\n"
+"Please confirm your subscription by clicking this link:\n"
+"\n"
+"{confirmation_url}\n"
+"\n"
+"Thank you."
+msgstr ""
+"Bonjour,\n"
+"\n"
+"Veuillez confirmer votre abonnement en cliquant sur ce lien :\n"
+"\n"
+"{confirmation_url}\n"
+"\n"
+"Merci."
+
+#: ActionSubscriber.php:167
+msgid "Available placeholders: {confirmation_url}, {email}, {site_name}."
+msgstr "Variables disponibles : {confirmation_url}, {email}, {site_name}."
+
+#: ActionSubscriber.php:174
+msgid "Confirmation success URL"
+msgstr "URL de redirection après confirmation"
+
+#: ActionSubscriber.php:179
+msgid "Optional URL to redirect to after confirmation."
+msgstr "URL optionnelle vers laquelle rediriger après la confirmation."
+
+#: ActionSubscriber.php:186
+msgid "Field mappings"
+msgstr "Mappages de champs"
+
+#: ActionSubscriber.php:189
+msgid "Map Elementor field IDs to EmailOctopus field tags, one per line. Example: firstname:FirstName"
+msgstr "Mappez les identifiants de champs Elementor aux balises de champs EmailOctopus, une par ligne. Exemple : firstname:FirstName"
+
+#: ActionSubscriber.php:196
+msgid "EmailOctopus FirstName field"
+msgstr "Champ Prénom (FirstName) EmailOctopus"
+
+#: ActionSubscriber.php:199
+msgid "Legacy shortcut. Prefer Field mappings above for new forms."
+msgstr "Raccourci obsolète. Préférez les mappages de champs ci-dessus pour les nouveaux formulaires."
+
+#: ActionSubscriber.php:206
+msgid "EmailOctopus LastName field"
+msgstr "Champ Nom (LastName) EmailOctopus"
+
+#: ActionSubscriber.php:216
+msgid "EmailOctopus Phone field"
+msgstr "Champ Téléphone (Phone) EmailOctopus"
+
+#: ActionSubscriber.php:226
+msgid "EmailOctopus Custom field"
+msgstr "Champ personnalisé EmailOctopus"
+
+#: ActionSubscriber.php:236
+msgid "EmailOctopus Tags"
+msgstr "Étiquettes (Tags) EmailOctopus"
+
+#: ActionSubscriber.php:239
+msgid "Optional comma-separated tags to add to the contact."
+msgstr "Étiquettes facultatives séparées par des virgules à ajouter au contact."
+
+#: ActionSubscriber.php:530 ActionSubscriber.php:564
+#, php-format
+msgid "EmailOctopus subscription failed: %s"
+msgstr "L'inscription à EmailOctopus a échoué : %s"
+
+#: ActionSubscriber.php:557
+#, php-format
+msgid "HTTP %d returned by EmailOctopus."
+msgstr "HTTP %d renvoyé par EmailOctopus."
+
+#: ConfirmationHandler.php:70
+msgid "Invalid confirmation link."
+msgstr "Lien de confirmation invalide."
+
+#: ConfirmationHandler.php:77
+msgid "This confirmation link is invalid or has expired."
+msgstr "Ce lien de confirmation est invalide ou a expiré."
+
+#: ConfirmationHandler.php:90
+msgid "Unable to confirm your subscription. Please try again later."
+msgstr "Impossible de confirmer votre abonnement. Veuillez réessayer plus tard."
+
+#: ConfirmationHandler.php:100
+msgid "Your subscription has been confirmed."
+msgstr "Votre abonnement a été confirmé."

@@ -21,6 +21,14 @@ require_once EO_FORMS_PATH . 'ConfirmationHandler.php';
 add_action( 'admin_post_nopriv_eof_confirm_subscription', [ 'EOF_Confirmation_Handler', 'confirm_subscription' ] );
 add_action( 'admin_post_eof_confirm_subscription', [ 'EOF_Confirmation_Handler', 'confirm_subscription' ] );
 
+add_action( 'plugins_loaded', 'eof_load_textdomain' );
+/**
+ * Load plugin textdomain.
+ */
+function eof_load_textdomain() {
+	load_plugin_textdomain( 'eo-forms', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+}
+
 add_action( 'elementor_pro/init', function() {
 	require_once EO_FORMS_PATH . 'ActionSubscriber.php';
 
