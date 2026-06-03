@@ -101,19 +101,34 @@ class EOF_Confirmation_Handler {
 	}
 
 	private static function request( $method, $path, $data ) {
+		$curl_headers = function( $handle ) {
+			curl_setopt(
+				$handle,
+				CURLOPT_HTTPHEADER,
+				[
+					'Authorization: Bearer ' . EMAILOCTOPUS_API_KEY,
+					'Content-Type: application/json',
+				]
+			);
+		};
+
+		add_action( 'http_api_curl', $curl_headers );
+
 		$response = wp_remote_request(
 			self::API_BASE . $path,
 			[
 				'method'  => $method,
 				'headers' => [
 					'Authorization' => 'Bearer ' . EMAILOCTOPUS_API_KEY,
-					'content-type'  => 'application/json; charset=utf-8',
+					'Content-Type'  => 'application/json',
 				],
 				'body'        => wp_json_encode( $data ),
 				'data_format' => 'body',
 				'timeout'     => 15,
 			]
 		);
+
+		remove_action( 'http_api_curl', $curl_headers );
 
 		if ( is_wp_error( $response ) ) {
 			error_log( 'EO Forms: ' . $response->get_error_message() );
