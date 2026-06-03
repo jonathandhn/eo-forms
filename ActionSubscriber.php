@@ -491,10 +491,11 @@ class EOF_Subscribe_Action_After_Submit extends Action_Base {
 				'method'  => $method,
 				'headers' => [
 					'Authorization' => 'Bearer ' . EMAILOCTOPUS_API_KEY,
-					'Content-Type'  => 'application/json',
+					'content-type'  => 'application/json; charset=utf-8',
 				],
-				'body'    => wp_json_encode( $data ),
-				'timeout' => 15,
+				'body'        => wp_json_encode( $data ),
+				'data_format' => 'body',
+				'timeout'     => 15,
 			]
 		);
 

@@ -5,7 +5,7 @@
  * Description: Manage your EmailOctopus subscribers with Elementor forms.
  * Author: Jonathan DAHAN
  * Author URI: https://www.jonathan.dhn.one
- * Version: 1.0.0
+ * Version: 1.0.1
  * Text Domain: eo-forms
  * Domain Path: /languages
  */
