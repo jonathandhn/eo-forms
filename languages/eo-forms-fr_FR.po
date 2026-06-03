@@ -181,3 +181,19 @@ msgstr "Impossible de confirmer votre abonnement. Veuillez réessayer plus tard.
 #: ConfirmationHandler.php:100
 msgid "Your subscription has been confirmed."
 msgstr "Votre abonnement a été confirmé."
+
+#: ActionSubscriber.php:148
+msgid "Send WordPress confirmation email"
+msgstr "Envoyer l'e-mail de confirmation WordPress"
+
+#: ActionSubscriber.php:150
+msgid "Yes"
+msgstr "Oui"
+
+#: ActionSubscriber.php:151
+msgid "No"
+msgstr "Non"
+
+#: ActionSubscriber.php:156
+msgid "If disabled, EmailOctopus will handle the subscription lifecycle (useful if you have an automated double opt-in configured on EmailOctopus)."
+msgstr "Si désactivé, EmailOctopus gérera le cycle de vie de l'abonnement (utile si vous avez configuré un double opt-in automatique sur EmailOctopus)."

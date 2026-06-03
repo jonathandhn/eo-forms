@@ -84,10 +84,14 @@ class EOF_Subscribe_Action_After_Submit extends Action_Base {
 		}
 
 		if ( 'pending' === $data['status'] && $this->is_successful_response( $response ) ) {
-			$mail_sent = EOF_Confirmation_Handler::send_confirmation_email( $email, $settings );
+			$send_email = isset( $settings['EOF_send_confirmation_email'] ) ? $settings['EOF_send_confirmation_email'] : 'yes';
 
-			if ( ! $mail_sent ) {
-				$this->add_error( $ajax_handler, __( 'The confirmation email could not be sent. Please try again later.', 'eo-forms' ) );
+			if ( 'yes' === $send_email ) {
+				$mail_sent = EOF_Confirmation_Handler::send_confirmation_email( $email, $settings );
+
+				if ( ! $mail_sent ) {
+					$this->add_error( $ajax_handler, __( 'The confirmation email could not be sent. Please try again later.', 'eo-forms' ) );
+				}
 			}
 		}
 	}
@@ -143,13 +147,30 @@ class EOF_Subscribe_Action_After_Submit extends Action_Base {
 		);
 
 		$widget->add_control(
+			'EOF_send_confirmation_email',
+			[
+				'label'        => __( 'Send WordPress confirmation email', 'eo-forms' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'label_on'     => __( 'Yes', 'eo-forms' ),
+				'label_off'    => __( 'No', 'eo-forms' ),
+				'return_value' => 'yes',
+				'default'      => 'yes',
+				'condition'    => [
+					'EOF_status' => 'PENDING',
+				],
+				'description'  => __( 'If disabled, EmailOctopus will handle the subscription lifecycle (useful if you have an automated double opt-in configured on EmailOctopus).', 'eo-forms' ),
+			]
+		);
+
+		$widget->add_control(
 			'EOF_confirmation_subject',
 			[
 				'label'       => __( 'Confirmation email subject', 'eo-forms' ),
 				'type'        => Controls_Manager::TEXT,
 				'default'     => __( 'Confirm your subscription', 'eo-forms' ),
 				'condition'   => [
-					'EOF_status' => 'PENDING',
+					'EOF_status'                  => 'PENDING',
+					'EOF_send_confirmation_email' => 'yes',
 				],
 				'description' => __( 'Plain text email sent by WordPress.', 'eo-forms' ),
 			]
@@ -162,7 +183,8 @@ class EOF_Subscribe_Action_After_Submit extends Action_Base {
 				'type'        => Controls_Manager::TEXTAREA,
 				'default'     => __( "Hello,\n\nPlease confirm your subscription by clicking this link:\n\n{confirmation_url}\n\nThank you.", 'eo-forms' ),
 				'condition'   => [
-					'EOF_status' => 'PENDING',
+					'EOF_status'                  => 'PENDING',
+					'EOF_send_confirmation_email' => 'yes',
 				],
 				'description' => __( 'Available placeholders: {confirmation_url}, {email}, {site_name}.', 'eo-forms' ),
 			]
@@ -174,7 +196,8 @@ class EOF_Subscribe_Action_After_Submit extends Action_Base {
 				'label'       => __( 'Confirmation success URL', 'eo-forms' ),
 				'type'        => Controls_Manager::TEXT,
 				'condition'   => [
-					'EOF_status' => 'PENDING',
+					'EOF_status'                  => 'PENDING',
+					'EOF_send_confirmation_email' => 'yes',
 				],
 				'description' => __( 'Optional URL to redirect to after confirmation.', 'eo-forms' ),
 			]
@@ -247,6 +270,7 @@ class EOF_Subscribe_Action_After_Submit extends Action_Base {
 		unset(
 			$element['EOF_listID'],
 			$element['EOF_status'],
+			$element['EOF_send_confirmation_email'],
 			$element['EOF_confirmation_subject'],
 			$element['EOF_confirmation_message'],
 			$element['EOF_confirmation_success_url'],
