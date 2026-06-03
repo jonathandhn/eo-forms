@@ -76,13 +76,15 @@ Available email placeholders:
 
 ## Elementor Field IDs
 
-The form should use these field IDs:
+The form should preferably use these field IDs:
 
-- `email` for the email address, mandatory
+- `email` for the email address
 - `firstname` for the first name
 - `name` for the last name
 - `phone` for the phone number
 - `custom` for one custom value
+
+If the email field ID is not `email`, EO Forms will use the first valid email value found in the submitted Elementor fields.
 
 Any other Elementor field ID can be mapped through **Field mappings**.
 

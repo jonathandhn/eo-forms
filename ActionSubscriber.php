@@ -34,13 +34,13 @@ class EOF_Subscribe_Action_After_Submit extends Action_Base {
 		}
 
 		$fields = $this->get_form_fields( $record );
+		$email  = $this->get_email_from_fields( $fields );
 
-		if ( empty( $fields['email'] ) || ! is_email( $fields['email'] ) ) {
-			$this->add_error( $ajax_handler, __( 'A valid email field with the ID "email" is required.', 'eo-forms' ) );
+		if ( empty( $email ) ) {
+			$this->add_error( $ajax_handler, __( 'A valid email field is required. Use the field ID "email" or provide one valid email value in the form.', 'eo-forms' ) );
 			return;
 		}
 
-		$email = sanitize_email( $fields['email'] );
 		$data  = [
 			'email_address' => $email,
 			'status'        => $this->get_contact_status( $settings ),
@@ -79,7 +79,7 @@ class EOF_Subscribe_Action_After_Submit extends Action_Base {
 		);
 
 		if ( ! $this->is_successful_response( $response ) ) {
-			$this->add_error( $ajax_handler, __( 'EmailOctopus subscription failed. Please try again later.', 'eo-forms' ) );
+			$this->add_error( $ajax_handler, $this->get_response_error_message( $response ) );
 			return;
 		}
 
@@ -270,6 +270,24 @@ class EOF_Subscribe_Action_After_Submit extends Action_Base {
 		}
 
 		return $fields;
+	}
+
+	private function get_email_from_fields( $fields ) {
+		if ( ! empty( $fields['email'] ) && is_email( $fields['email'] ) ) {
+			return sanitize_email( $fields['email'] );
+		}
+
+		foreach ( $fields as $value ) {
+			if ( is_array( $value ) ) {
+				continue;
+			}
+
+			if ( is_email( $value ) ) {
+				return sanitize_email( $value );
+			}
+		}
+
+		return '';
 	}
 
 	private function get_contact_fields( $fields, $settings ) {
@@ -502,6 +520,49 @@ class EOF_Subscribe_Action_After_Submit extends Action_Base {
 		$status_code = wp_remote_retrieve_response_code( $response );
 
 		return 200 <= $status_code && 300 > $status_code;
+	}
+
+	private function get_response_error_message( $response ) {
+		if ( is_wp_error( $response ) ) {
+			return sprintf(
+				/* translators: %s: WordPress error message. */
+				__( 'EmailOctopus subscription failed: %s', 'eo-forms' ),
+				$response->get_error_message()
+			);
+		}
+
+		$body    = json_decode( wp_remote_retrieve_body( $response ), true );
+		$details = [];
+
+		if ( ! empty( $body['detail'] ) ) {
+			$details[] = sanitize_text_field( $body['detail'] );
+		}
+
+		if ( ! empty( $body['errors'] ) && is_array( $body['errors'] ) ) {
+			foreach ( $body['errors'] as $error ) {
+				if ( empty( $error['detail'] ) ) {
+					continue;
+				}
+
+				$pointer   = ! empty( $error['pointer'] ) ? sanitize_text_field( $error['pointer'] ) . ': ' : '';
+				$details[] = $pointer . sanitize_text_field( $error['detail'] );
+			}
+		}
+
+		if ( empty( $details ) ) {
+			$status_code = wp_remote_retrieve_response_code( $response );
+			$details[]   = sprintf(
+				/* translators: %d: HTTP status code. */
+				__( 'HTTP %d returned by EmailOctopus.', 'eo-forms' ),
+				$status_code
+			);
+		}
+
+		return sprintf(
+			/* translators: %s: EmailOctopus API error details. */
+			__( 'EmailOctopus subscription failed: %s', 'eo-forms' ),
+			implode( ' ', $details )
+		);
 	}
 
 	private function add_error( $ajax_handler, $message ) {
