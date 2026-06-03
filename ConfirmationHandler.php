@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class EOF_Confirmation_Handler {
 
-	const API_BASE = 'https://emailoctopus.com/api/1.6';
+	const API_BASE = 'https://api.emailoctopus.com';
 	const TRANSIENT_PREFIX = 'eof_confirmation_';
 	const CONFIRMATION_TTL = 7 * DAY_IN_SECONDS;
 
@@ -50,7 +50,13 @@ class EOF_Confirmation_Handler {
 			'{site_name}'        => wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ),
 		];
 
-		wp_mail( sanitize_email( $email ), $subject, strtr( $message, $replacements ) );
+		$mail_sent = wp_mail( sanitize_email( $email ), $subject, strtr( $message, $replacements ) );
+
+		if ( ! $mail_sent ) {
+			error_log( 'EO Forms: WordPress could not send the confirmation email to ' . sanitize_email( $email ) . '.' );
+		}
+
+		return $mail_sent;
 	}
 
 	public static function confirm_subscription() {
@@ -75,9 +81,8 @@ class EOF_Confirmation_Handler {
 			'PUT',
 			'/lists/' . rawurlencode( $confirmation['list_id'] ) . '/contacts/' . md5( strtolower( $confirmation['email'] ) ),
 			[
-				'api_key'       => EMAILOCTOPUS_API_KEY,
 				'email_address' => $confirmation['email'],
-				'status'        => 'SUBSCRIBED',
+				'status'        => 'subscribed',
 			]
 		);
 
@@ -101,7 +106,8 @@ class EOF_Confirmation_Handler {
 			[
 				'method'  => $method,
 				'headers' => [
-					'Content-Type' => 'application/json',
+					'Authorization' => 'Bearer ' . EMAILOCTOPUS_API_KEY,
+					'Content-Type'  => 'application/json',
 				],
 				'body'    => wp_json_encode( $data ),
 				'timeout' => 15,
@@ -127,6 +133,8 @@ class EOF_Confirmation_Handler {
 			return false;
 		}
 
-		return 200 === wp_remote_retrieve_response_code( $response );
+		$status_code = wp_remote_retrieve_response_code( $response );
+
+		return 200 <= $status_code && 300 > $status_code;
 	}
 }

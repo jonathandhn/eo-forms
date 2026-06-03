@@ -14,11 +14,15 @@ By default, the contact is sent to EmailOctopus with the `PENDING` status. WordP
 
 1. Upload the `eo-forms` folder to `/wp-content/plugins/`.
 2. Activate the plugin in WordPress.
-3. Add your EmailOctopus API key to `wp-config.php`:
+3. Add your EmailOctopus API v2 key to `wp-config.php`:
 
 ```php
 define( 'EMAILOCTOPUS_API_KEY', 'your_api_key' );
 ```
+
+The plugin sends this key as a Bearer token to `https://api.emailoctopus.com`.
+
+When the key is available, EO Forms retrieves EmailOctopus lists from `GET /lists` and shows them in Elementor. The list selector is cached for 10 minutes.
 
 ## Usage
 
@@ -26,18 +30,28 @@ define( 'EMAILOCTOPUS_API_KEY', 'your_api_key' );
 2. Add or edit a Form widget.
 3. In **Actions After Submit**, select **EmailOctopus Subscribe**.
 4. Open the new **EmailOctopus** section.
-5. Enter your **EmailOctopus List ID**.
+5. Select your **EmailOctopus list**. If the API key is missing or WordPress cannot reach EmailOctopus, enter the list ID manually.
 6. Keep **Subscription status** as **Pending** to let WordPress send the confirmation email.
 7. Customize the plain text confirmation email:
    - **Confirmation email subject**
    - **Confirmation email message**
    - **Confirmation success URL**, optional
-8. Map optional field tags:
-   - **EmailOctopus FirstName field**: e.g. `FirstName`
-   - **EmailOctopus LastName field**: e.g. `LastName`
-   - **EmailOctopus Phone field**: e.g. `Phone`
-   - **EmailOctopus Custom field**: any custom EmailOctopus field tag
+8. Map optional fields in **Field mappings**:
+
+```text
+firstname:FirstName
+name:LastName
+phone:Phone
+company:Company
+```
+
+The value before `:` is the Elementor form field ID. The value after `:` is the EmailOctopus field tag.
+
+Legacy shortcut fields are still available for `firstname`, `name`, `phone`, and `custom`, but **Field mappings** should be preferred for new forms.
+
 9. Add optional comma-separated tags.
+
+When WordPress can retrieve the selected EmailOctopus list, EO Forms verifies mapped EmailOctopus field tags before submitting the contact. Unknown mapped tags are shown as an Elementor error.
 
 ## WordPress Confirmation Flow
 
@@ -69,6 +83,8 @@ The form should use these field IDs:
 - `name` for the last name
 - `phone` for the phone number
 - `custom` for one custom value
+
+Any other Elementor field ID can be mapped through **Field mappings**.
 
 ## Requirements
 
